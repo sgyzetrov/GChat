@@ -2,8 +2,8 @@
  * Name: C Command line chat client       
  * Program: gyTCPclient.c
  * Auther: Guo Yang <guoyang@webmail.hzau.edu.cn>
- * Version: 0.0.1
- * Date(mm/dd/yyyy): 12/11/2017
+ * Version: 0.0.2
+ * Date(mm/dd/yyyy): 3/10/2018
  * Description: 
  *  client program for my TCP command line chat program
  *  
@@ -23,9 +23,9 @@
 # include <netinet/in.h>
 # include <arpa/inet.h>
 
-# define IP_ADDRESS "127.0.0.1" // 回送地址，指本地机，我用来作为测试程序server的IP，后期可调为动态用户输入
-# define PORT 4444 // 固定使用端口为4444，后期可调为动态用户输入
-# define BUFFSIZE 256 // 客户端和服务器端的信息长度限制为256B
+# define IP_ADDRESS "127.0.0.1" // For testing purpose, can be altered to user input.
+# define PORT 4444 // Port is set to 4444 for testing purpose, can be altered to user input.
+# define BUFFSIZE 256 // 256B is max capacity for both client and server msg.
 
 int main()
 { 
@@ -45,13 +45,13 @@ int main()
 		exit(1);
 	}
 
-    // 填充sockaddr_in
+    // filling up sockaddr_in
 	bzero(&client_connection, sizeof(client_connection)); 
 	client_connection.sin_family = AF_INET; 
 	client_connection.sin_addr.s_addr = inet_addr(IP_ADDRESS); 
 	client_connection.sin_port = htons(PORT); 
 
-    // 将sockaddr_in强制转换成struct sockaddr
+    // convert sockaddr_in to struct sockaddr
 	if (connect(sock, (struct sockaddr *)&client_connection, sizeof(client_connection)) < 0) { 
 		perror ("Error establishing communications");
 		close(sock);
@@ -60,10 +60,10 @@ int main()
 
 	while (1) {   
 		printf(">> ");// start input prompt
-        // 客户端用户开始输入消息
+        // client start inputing
 		gets(client_msg_buffer);
 		write(sock, client_msg_buffer, BUFFSIZE);
-        // 客户端用户输入bye开头的消息，即终止服务
+        // client inputs 'bye' indicates exiting program
 		if ((client_msg_buffer[0] == 'b' || client_msg_buffer[0] == 'B') && 
             (client_msg_buffer[1] == 'y' || client_msg_buffer[1] == 'Y') && 
             (client_msg_buffer[2] == 'e' || client_msg_buffer[2] == 'E')) {
@@ -72,7 +72,7 @@ int main()
 		read(sock, server_msg_buffer, BUFFSIZE);
 		printf("Server>> msg received: [%s] .\n", server_msg_buffer);
         
-        // 服务器端用户输入bye开头的消息，即终止服务
+        // server inputs 'bye' indicates exiting program
         if ((server_msg_buffer[0] == 'b' || server_msg_buffer[0] == 'B') && 
             (server_msg_buffer[1] == 'y' || server_msg_buffer[1] == 'Y') && 
             (server_msg_buffer[2] == 'e' || server_msg_buffer[2] == 'E')){
