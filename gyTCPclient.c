@@ -25,7 +25,7 @@
 
 # define IP_ADDRESS "127.0.0.1" // For testing purpose, can be altered to user input.
 # define PORT 4444 // Port is set to 4444 for testing purpose, can be altered to user input.
-# define BUFFSIZE 256 // 256B is max capacity for both client and server msg.
+# define BUFFSIZE 256 // 256B are max capacity for both client and server msg.
 
 int main()
 { 
