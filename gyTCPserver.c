@@ -2,8 +2,8 @@
  * Name: C Command line chat server       
  * Program: gyTCPserver.c
  * Auther: Guo Yang <guoyang@webmail.hzau.edu.cn>
- * Version: 0.0.1
- * Date(mm/dd/yyyy): 12/11/2017
+ * Version: 0.0.2
+ * Date(mm/dd/yyyy): 3/11/2018
  * Description: 
  *  server program for my TCP command line chat program
  *  
@@ -25,8 +25,8 @@
 # include <sys/un.h>
 # include <netinet/in.h>
 
-# define PORT 4444 // 固定使用端口为4444，后期可调为动态用户输入
-# define BUFFSIZE 256 // 客户端和服务器端的信息长度限制为256B
+# define PORT 4444 // Port is set to 4444 for testing purpose, can be altered to user input.
+# define BUFFSIZE 256 // 256B are max capacity for both client and server msg.
 
 void clean_up(int cond, int *sock)
 { 
@@ -69,7 +69,7 @@ int main()
 
 
 	while (1) { 
-        // 读取用户端的消息
+        // read client's input
 		read(connect_sock, client_msg_buffer, BUFFSIZE);
 		printf("Client>> msg received: [%s] .\n", client_msg_buffer);
         if ((client_msg_buffer[0] == 'b' || client_msg_buffer[0] == 'B') && 
@@ -84,10 +84,10 @@ int main()
 		}
 
 		printf(">> ");// start input prompt
-        // 服务器端开始输入
+        // server inputting
 		gets(server_msg_buffer);
 		write(connect_sock, server_msg_buffer, BUFFSIZE);
-        // 服务器端用户输入bye开头的消息，即终止服务
+        // server inputs 'bye' indicates exiting program
 		if ((server_msg_buffer[0] == 'b' || server_msg_buffer[0] == 'B') && 
             (server_msg_buffer[1] == 'y' || server_msg_buffer[1] == 'Y') && 
             (server_msg_buffer[2] == 'e' || server_msg_buffer[2] == 'E')){
