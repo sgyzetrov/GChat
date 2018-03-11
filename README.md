@@ -34,4 +34,4 @@ gcc gyTCPclient.c -o client
 
 ## todo
 
-- [ ] translate comments into English🤣
+- [x] translate comments into English🤣
